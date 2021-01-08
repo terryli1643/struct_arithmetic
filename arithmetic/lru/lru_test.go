@@ -1,14 +1,12 @@
-package test_lru
+package lru
 
 import (
 	"fmt"
 	"testing"
-
-	"github.com/terryli1643/struct_arithmetic/arithmetic/lru"
 )
 
 func TestLRU(t *testing.T) {
-	myLRU := lru.NewMyList(10)
+	myLRU := NewMyList(10)
 	for i := 0; i < 10; i++ {
 		myLRU.Put(i)
 	}

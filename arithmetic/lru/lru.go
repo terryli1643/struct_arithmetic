@@ -1,6 +1,3 @@
-/**
-lru: 最近最少访问策略
-*/
 package lru
 
 type MyList struct {
@@ -13,7 +10,7 @@ type MyList struct {
 }
 
 var l *MyList
-var h map[interface{}]*MyList
+var h = make(map[interface{}]*MyList)
 
 func NewMyList(cap int) *MyList {
 	head := &MyList{cap: cap, prve: nil}
@@ -31,16 +28,16 @@ func NewMyList(cap int) *MyList {
 
 func (l *MyList) Len() int {
 	n := 0
-	for h := l.head.next; h != l.tail; h = h.next {
+	for h := l.head.next; h != nil && h != l.tail; h = h.next {
 		n++
 	}
 	return n
 }
 
 func (l *MyList) Put(v interface{}) {
-	e := &MyList{Value: v, cap: l.cap}
+	e := &MyList{Value: v, cap: l.cap, head: l.head, tail: l.tail}
 	l.tail.prve.insertAfter(e)
-	if l.Len() < l.cap {
+	if l.Len() > l.cap {
 		e.removeLRU()
 	}
 	h[v] = e
