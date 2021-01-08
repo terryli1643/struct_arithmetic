@@ -17,18 +17,18 @@ func NewMyList(cap int) *MyList {
 	tail := &MyList{cap: cap, next: nil}
 
 	head.next = tail
+	head.head = head
+	head.tail = tail
 	tail.prve = head
+	tail.head = head
+	tail.tail = tail
 
-	return &MyList{
-		cap:  cap,
-		head: head,
-		tail: tail,
-	}
+	return head
 }
 
 func (l *MyList) Len() int {
 	n := 0
-	for h := l.head.next; h != nil && h != l.tail; h = h.next {
+	for h := l.head.next; h != l.tail; h = h.next {
 		n++
 	}
 	return n
