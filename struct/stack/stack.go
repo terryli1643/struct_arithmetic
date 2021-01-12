@@ -16,7 +16,7 @@ func NewMyStack(cap int) *MyStack {
 
 	return &MyStack{
 		data: make([]interface{}, cap),
-		top:  0,
+		top:  -1,
 	}
 }
 
@@ -30,7 +30,7 @@ func (s *MyStack) Push(e interface{}) (err error) {
 }
 
 func (s *MyStack) Pull() (e interface{}) {
-	if len(s.data) <= 0 {
+	if s.top < 0 {
 		return nil
 	}
 	e = s.data[s.top]
@@ -40,5 +40,8 @@ func (s *MyStack) Pull() (e interface{}) {
 }
 
 func (s *MyStack) GetTop() (e interface{}) {
+	if s.top == -1 {
+		return nil
+	}
 	return s.data[s.top]
 }

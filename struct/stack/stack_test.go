@@ -15,7 +15,6 @@ func TestCalculate(t *testing.T) {
 
 	for _, v := range pattern {
 		s := string(v)
-		t.Log(s)
 		if s == "" {
 			continue
 		}
@@ -27,17 +26,17 @@ func TestCalculate(t *testing.T) {
 		}
 	}
 
-	for {
-		os := symbol.Pull()
-		if os == nil {
-			break
-		}
-		t.Log(os)
+	for os := symbol.Pull(); os != nil; os = symbol.Pull() {
 		o1 := data.Pull().(string)
 		o2 := data.Pull().(string)
-		operate(o1, o2, os.(string))
+		result, err := operate(o1, o2, os.(string))
+		if err != nil {
+			t.Fatal(err)
+		}
+		data.Push(result)
 	}
-	t.Log(data.Pull().(string))
+
+	t.Logf("Result is : %s", data.Pull().(string))
 }
 
 func handleSymbol(data *MyStack, symbol *MyStack, os string) (err error) {
@@ -47,7 +46,6 @@ func handleSymbol(data *MyStack, symbol *MyStack, os string) (err error) {
 			o1 := data.Pull().(string)
 			o2 := data.Pull().(string)
 			st := symbol.Pull().(string)
-			fmt.Println(st)
 			result, err := operate(o1, o2, st)
 			if err != nil {
 				return err
@@ -65,10 +63,10 @@ func shouldCalculate(op, st interface{}) bool {
 	if st == nil {
 		return false
 	}
-	if (op == "+" || op == "-") && (st == "*" || st == "/") {
-		return true
+	if (op == "*" || op == "/") && (st == "+" || st == "-") {
+		return false
 	}
-	return false
+	return true
 }
 
 func operate(o1 string, o2 string, os string) (result string, err error) {
@@ -77,13 +75,13 @@ func operate(o1 string, o2 string, os string) (result string, err error) {
 
 	switch os {
 	case "+":
-		return fmt.Sprint(v1 + v2), nil
+		return fmt.Sprint(v2 + v1), nil
 	case "-":
-		return fmt.Sprint(v1 - v2), nil
+		return fmt.Sprint(v2 - v1), nil
 	case "*":
-		return fmt.Sprint(v1 * v2), nil
+		return fmt.Sprint(v2 * v1), nil
 	case "/":
-		return fmt.Sprint(v1 / v2), nil
+		return fmt.Sprint(v2 / v1), nil
 	default:
 		return "", errors.New("invalid opration symbol")
 	}
