@@ -1,7 +1,6 @@
 package lru
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -19,8 +18,7 @@ func TestLRU(t *testing.T) {
 		myLRU.Put(i)
 	}
 
-	for i := 0; i < myLRU.Len(); i++ {
-		fmt.Print(myLRU.Value)
-		myLRU = myLRU.Next()
+	for i := myLRU.next; i != i.tail; i = i.next {
+		t.Log(i.Value)
 	}
 }
