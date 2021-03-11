@@ -1,6 +1,5 @@
-package sort_test
-
 import (
+	"net/http"
 	"testing"
 
 	"github.com/terryli1643/struct_arithmetic/arithmetic/lru/sort"

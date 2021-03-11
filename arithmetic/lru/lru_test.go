@@ -2,6 +2,7 @@ package lru
 
 import (
 	"testing"
+	"time"
 )
 
 func TestLRU(t *testing.T) {
@@ -21,4 +22,8 @@ func TestLRU(t *testing.T) {
 	for i := myLRU.next; i != i.tail; i = i.next {
 		t.Log(i.Value)
 	}
+
+	c := time.After(1 * time.Hour)
+	<-c
+
 }
