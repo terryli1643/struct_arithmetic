@@ -8,12 +8,12 @@ import (
 
 // 按照层级依次打印一个二叉树（利用队列）
 func main() {
-	l := list.New()
-	l.PushFront(newBTree())
-	print(l)
+	print(newBTree())
 }
 
-func print(l *list.List) {
+func print(root *BTree) {
+	l := list.New()
+	l.PushFront(root)
 	for e := l.Back(); e != nil; e = l.Back() {
 		t := e.Value.(*BTree)
 		if t.left != nil {
